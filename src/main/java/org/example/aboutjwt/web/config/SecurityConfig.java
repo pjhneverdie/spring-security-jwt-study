@@ -33,7 +33,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import java.util.Arrays;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -75,11 +75,11 @@ public class SecurityConfig {
                 public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                     CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-                    // 서버에 요청할 수 있는 도메인들 설정.
+                    // 서버에 요청할 수 있는 도메인들 설정
                     corsConfiguration.setAllowedOrigins(Arrays.stream(allowedOrigins).toList());
-                    // 서버에 요청을 보낼 때 헤더에 포함 시킬 수 있는 옵션들 설정.
+                    // 서버에 요청을 보낼 때 헤더에 포함 시킬 수 있는 옵션들 설정
                     corsConfiguration.setAllowedHeaders(Arrays.stream(allowedHeaders).toList());
-                    // 서버에 요청을 보낼 때 사용할 수 있는 http 동사 설정.
+                    // 서버에 요청을 보낼 때 사용할 수 있는 http 동사 설정
                     corsConfiguration.setAllowedMethods(Arrays.stream(allowedMethods).toList());
 
                     /**
@@ -101,6 +101,8 @@ public class SecurityConfig {
                 .requestMatchers("/", "/join").permitAll()
                 .requestMatchers("/admin").hasRole(Role.ROLE_ADMIN.toString().split("_")[1])
                 .anyRequest().authenticated());
+
+
 
         LoginFilter loginFilter = new LoginFilter(jwtUtil, authenticationManager());
         loginFilter.setUsernameParameter(usernameParam);
